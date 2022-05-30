@@ -1,3 +1,11 @@
-.header {
-  text-align: center;
+.main-section {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+@media screen and (max-width: 550px) {
+  .main-section {
+    flex-direction: column;
+  }
 }
