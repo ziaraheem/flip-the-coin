@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/static/css/main.f161779d.css",
-    "main.js": "/static/js/main.b68f2341.js",
-    "static/js/787.ea5065a6.chunk.js": "/static/js/787.ea5065a6.chunk.js",
-    "index.html": "/index.html",
-    "main.f161779d.css.map": "/static/css/main.f161779d.css.map",
-    "main.b68f2341.js.map": "/static/js/main.b68f2341.js.map",
-    "787.ea5065a6.chunk.js.map": "/static/js/787.ea5065a6.chunk.js.map"
+    "main.css": "/my-burger-app/static/css/main.f161779d.css",
+    "main.js": "/my-burger-app/static/js/main.7d70bbb0.js",
+    "static/js/787.ea5065a6.chunk.js": "/my-burger-app/static/js/787.ea5065a6.chunk.js",
+    "index.html": "/my-burger-app/index.html",
+    "main.f161779d.css.map": "/my-burger-app/static/css/main.f161779d.css.map",
+    "main.7d70bbb0.js.map": "/my-burger-app/static/js/main.7d70bbb0.js.map",
+    "787.ea5065a6.chunk.js.map": "/my-burger-app/static/js/787.ea5065a6.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.f161779d.css",
-    "static/js/main.b68f2341.js"
+    "static/js/main.7d70bbb0.js"
   ]
 }
