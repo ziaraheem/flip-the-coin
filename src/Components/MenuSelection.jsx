@@ -7,12 +7,19 @@ import FormLabel from "@mui/material/FormLabel";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import "./../App.css";
+import { Card } from "@mui/material";
 
 function MenuSelection() {
   const [isTomato, setTomato] = useState("0");
   const [isLettuce, setLettuce] = useState("0");
   const [isPattice, setPattice] = useState("0");
   const [isEgg, setEgg] = useState("0");
+  const oldHistory = localStorage.getItem("oldHistory")
+    ? JSON.parse(localStorage.getItem("oldHistory"))
+    : [];
+  console.log("oldHistory", oldHistory);
+
+  const [history, setHistory] = useState(oldHistory);
 
   const handleTomato = (event) => {
     setTomato(event.target.value);
@@ -31,6 +38,16 @@ function MenuSelection() {
   };
 
   const sendOrder = (event) => {
+    const burgerData = {
+      isLettuce: isLettuce,
+      isEgg: isEgg,
+      isPattice: isPattice,
+      isTomato: isTomato,
+      date: new Date(),
+    };
+    setHistory((oldArray) => [...oldArray, burgerData]);
+    oldHistory.push(burgerData);
+    localStorage.setItem("oldHistory", JSON.stringify(oldHistory));
     alert(
       "You order is burger with: Tomato: " +
         Number(isTomato) +
@@ -89,6 +106,9 @@ function MenuSelection() {
         <Button variant="contained" onClick={sendOrder}>
           Order
         </Button>
+      </div>
+      <div>
+        <History history={history}></History>
       </div>
     </div>
   );
@@ -189,5 +209,42 @@ function BurgerPreview(props) {
     </div>
   );
 }
+function History(props) {
+  console.log("props.history -> ", props);
+  return (
+    <div>
+      <Typography variant="h3" component="div" gutterBottom>
+        History
+      </Typography>
 
+      {props.history.length <= 0 ? (
+        <Typography variant="h3" component="div" gutterBottom>
+          No History Found
+        </Typography>
+      ) : (
+        props.history.map((item) => {
+          return (
+            <Card style={{ margin: "12px", padding: "12px" }}>
+              <Typography variant="p" component="div" gutterBottom>
+                Date: {String(item.date).split("GMT")[0]}
+              </Typography>
+              <Typography variant="p" component="div" gutterBottom>
+                Lettuce: {item.isLettuce}
+              </Typography>
+              <Typography variant="p" component="div" gutterBottom>
+                Egg: {item.isEgg}
+              </Typography>
+              <Typography variant="p" component="div" gutterBottom>
+                Pattice: {item.isPattice}
+              </Typography>
+              <Typography variant="p" component="div" gutterBottom>
+                Tomato: {item.isTomato}
+              </Typography>
+            </Card>
+          );
+        })
+      )}
+    </div>
+  );
+}
 export default MenuSelection;
