@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/my-burger-app/static/css/main.f161779d.css",
-    "main.js": "/my-burger-app/static/js/main.0896d600.js",
+    "main.js": "/my-burger-app/static/js/main.ea13ba0f.js",
     "static/js/787.7bff15e9.chunk.js": "/my-burger-app/static/js/787.7bff15e9.chunk.js",
     "index.html": "/my-burger-app/index.html",
     "main.f161779d.css.map": "/my-burger-app/static/css/main.f161779d.css.map",
-    "main.0896d600.js.map": "/my-burger-app/static/js/main.0896d600.js.map",
+    "main.ea13ba0f.js.map": "/my-burger-app/static/js/main.ea13ba0f.js.map",
     "787.7bff15e9.chunk.js.map": "/my-burger-app/static/js/787.7bff15e9.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.f161779d.css",
-    "static/js/main.0896d600.js"
+    "static/js/main.ea13ba0f.js"
   ]
 }
