@@ -7,18 +7,31 @@ import FormLabel from "@mui/material/FormLabel";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import "./../App.css";
-import { Card } from "@mui/material";
+import { Card, CardHeader, Checkbox } from "@mui/material";
+import TextField from "@mui/material/TextField";
+import Avatar from "@mui/material/Avatar";
+import { red } from "@mui/material/colors";
+import CardContent from "@mui/material/CardContent";
 
 function MenuSelection() {
-  const [isTomato, setTomato] = useState("0");
+  const [isTomato, setTomato] = useState(null);
   const [isLettuce, setLettuce] = useState("0");
   const [isPattice, setPattice] = useState("0");
   const [isEgg, setEgg] = useState("0");
+  const [name, setName] = useState("");
+  const [sauce, setSauce] = useState([]);
+  const sauces = [
+    { name: "Tomato Sauce", value: 555 },
+    { name: "Mayonese", value: 556 },
+    { name: "Brazilian Sauce", value: 557 },
+    { name: "Hot Sauce", value: 558 },
+    { name: "Spicy Sauce", value: 559 },
+    { name: "Greenland Sauce", value: 560 },
+    { name: "Pickle Sauce", value: 561 },
+  ];
   const oldHistory = localStorage.getItem("oldHistory")
     ? JSON.parse(localStorage.getItem("oldHistory"))
     : [];
-  console.log("oldHistory", oldHistory);
-
   const [history, setHistory] = useState(oldHistory);
 
   const handleTomato = (event) => {
@@ -37,27 +50,66 @@ function MenuSelection() {
     setEgg(event.target.value);
   };
 
-  const sendOrder = (event) => {
-    const burgerData = {
-      isLettuce: isLettuce,
-      isEgg: isEgg,
-      isPattice: isPattice,
-      isTomato: isTomato,
-      date: new Date(),
-    };
-    setHistory((oldArray) => [...oldArray, burgerData]);
-    oldHistory.push(burgerData);
-    localStorage.setItem("oldHistory", JSON.stringify(oldHistory));
-    alert(
-      "You order is burger with: Tomato: " +
-        Number(isTomato) +
-        ", Lettuce: " +
-        Number(isLettuce) +
-        ", Pattice: " +
-        Number(isPattice) +
-        " Egg: " +
-        Number(isEgg)
-    );
+  const updateName = (event) => {
+    setName(event.target.value);
+  };
+
+  const updateMyHistory = (history) => {
+    setHistory(history);
+    localStorage.setItem("oldHistory", JSON.stringify(history));
+  };
+
+  const sauceSelected = (event) => {
+    console.log("filtered before ", sauce);
+    if (event.target.checked) {
+      if (sauce.length >= 3) {
+        alert("can select only 3 sauce");
+      } else {
+        setSauce((oldArray) => [...oldArray, event.target.value]);
+      }
+    } else {
+      let filtered = sauce.filter((item) => item !== event.target.value);
+      setSauce(filtered);
+    }
+    console.log("filtered after ", sauce);
+  };
+
+  const sendOrder = () => {
+    if (name !== "" && isTomato) {
+      let date = new Date().toISOString().split("T");
+      const burgerData = {
+        name: name,
+        isLettuce: isLettuce,
+        isEgg: isEgg,
+        isPattice: isPattice,
+        isTomato: isTomato,
+        date: date[0] + " " + date[1].split(".")[0],
+      };
+      setHistory((oldArray) => [...oldArray, burgerData]);
+      oldHistory.push(burgerData);
+      localStorage.setItem("oldHistory", JSON.stringify(oldHistory));
+      alert(
+        "You order is burger with: Tomato: " +
+          Number(isTomato) +
+          ", Lettuce: " +
+          Number(isLettuce) +
+          ", Pattice: " +
+          Number(isPattice) +
+          " Egg: " +
+          Number(isEgg)
+      );
+      setTomato(null);
+      setLettuce("0");
+      setEgg("0");
+      setName("");
+      setPattice("0");
+    } else {
+      if (name === "") {
+        alert("please enter your name ");
+      } else if (!isTomato) {
+        alert("please select tomato preference ");
+      }
+    }
   };
 
   return (
@@ -74,15 +126,16 @@ function MenuSelection() {
       <div
         style={{ display: "flex", flexDirection: "column", padding: "12px" }}
       >
-        <Typography variant="h3" component="div" gutterBottom>
+        <Typography variant="h2" component="div" gutterBottom>
           Menu Selection
         </Typography>
-
         <FormControl>
+          <Typography variant="h4">Veggies</Typography>
           <FormLabel>Tomato</FormLabel>
           <RadioGroup row value={isTomato} onChange={handleTomato}>
             <FormControlLabel value="1" control={<Radio />} label="Yes" />
             <FormControlLabel value="0" control={<Radio />} label="No" />
+            <FormControlLabel value={null} control={<Radio />} label="NA" />
           </RadioGroup>
           <FormLabel>Lettuce</FormLabel>
           <RadioGroup row value={isLettuce} onChange={handleLettuce}>
@@ -102,13 +155,75 @@ function MenuSelection() {
             <FormControlLabel value="0" control={<Radio />} label="No" />
           </RadioGroup>
         </FormControl>
+        <FormControl>
+          <Typography variant="h4">Sauces</Typography>
 
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={sauce.includes("Tomato")}
+                value="Tomato"
+                onChange={sauceSelected}
+              />
+            }
+            label="Tomato Sauce"
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={sauce.includes("Mayo")}
+                value="Mayo"
+                onChange={sauceSelected}
+              />
+            }
+            label="Mayo"
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+                value="Garlic"
+                checked={sauce.includes("Garlic")}
+                onChange={sauceSelected}
+              />
+            }
+            label="Garlic"
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={sauce.includes("Lassan")}
+                value="Lassan"
+                onChange={sauceSelected}
+              />
+            }
+            label="Lassan"
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={sauce.includes("Pickle")}
+                value="Pickle"
+                onChange={sauceSelected}
+              />
+            }
+            label="Pickle"
+          />
+        </FormControl>
+
+        <TextField
+          style={{ margin: "12px" }}
+          id="outlined-basic"
+          label="Customer Name"
+          variant="outlined"
+          value={name}
+          onChange={updateName}
+        />
         <Button variant="contained" onClick={sendOrder}>
           Order
         </Button>
       </div>
       <div>
-        <History history={history}></History>
+        <History history={history} updateMyHistory={updateMyHistory}></History>
       </div>
     </div>
   );
@@ -123,9 +238,11 @@ function BurgerPreview(props) {
         padding: "12px",
       }}
     >
-      <Typography variant="h3" component="div" gutterBottom>
-        Burger Preview
-      </Typography>
+      {!props.isFromHistory ? (
+        <Typography variant="h3" component="div" gutterBottom>
+          Burger Preview
+        </Typography>
+      ) : null}
       <div
         style={{
           display: "flex",
@@ -210,7 +327,10 @@ function BurgerPreview(props) {
   );
 }
 function History(props) {
-  console.log("props.history -> ", props);
+  const deleteHis = (date) => {
+    let filterUsed = props.history.filter((item) => item.date !== date);
+    props.updateMyHistory(filterUsed);
+  };
   return (
     <div>
       <Typography variant="h3" component="div" gutterBottom>
@@ -218,28 +338,52 @@ function History(props) {
       </Typography>
 
       {props.history.length <= 0 ? (
-        <Typography variant="h3" component="div" gutterBottom>
+        <Typography variant="body" component="div" gutterBottom>
           No History Found
         </Typography>
       ) : (
-        props.history.map((item) => {
+        props.history.map((item, index) => {
           return (
-            <Card style={{ margin: "12px", padding: "12px" }}>
-              <Typography variant="p" component="div" gutterBottom>
-                Date: {String(item.date).split("GMT")[0]}
-              </Typography>
-              <Typography variant="p" component="div" gutterBottom>
-                Lettuce: {item.isLettuce}
-              </Typography>
-              <Typography variant="p" component="div" gutterBottom>
-                Egg: {item.isEgg}
-              </Typography>
-              <Typography variant="p" component="div" gutterBottom>
-                Pattice: {item.isPattice}
-              </Typography>
-              <Typography variant="p" component="div" gutterBottom>
-                Tomato: {item.isTomato}
-              </Typography>
+            <Card key={item.date} style={{ margin: "12px", padding: "12px" }}>
+              <CardHeader
+                avatar={
+                  <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+                    {item.name ? item.name.charAt(0) : "O"}
+                  </Avatar>
+                }
+                title={item.name}
+                subheader={JSON.stringify(item.date)}
+              />
+
+              <CardContent>
+                <Typography variant="p" component="div" gutterBottom>
+                  Lettuce: {item.isLettuce}
+                </Typography>
+                <Typography variant="p" component="div" gutterBottom>
+                  Egg: {item.isEgg}
+                </Typography>
+                <Typography variant="p" component="div" gutterBottom>
+                  Pattice: {item.isPattice}
+                </Typography>
+                <Typography variant="p" component="div" gutterBottom>
+                  Tomato: {item.isTomato}
+                </Typography>
+              </CardContent>
+              <BurgerPreview
+                isTomato={item.isTomato}
+                isLettuce={item.isLettuce}
+                isPattice={item.isPattice}
+                isEgg={item.isEgg}
+                isFromHistory={true}
+              ></BurgerPreview>
+
+              <Button
+                variant="outlined"
+                size="small"
+                onClick={() => deleteHis(item.date)}
+              >
+                Delete
+              </Button>
             </Card>
           );
         })
